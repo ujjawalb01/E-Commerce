@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PaypalButton from "./PaypalButton";
+
 const cart = {
   products: [
     {
@@ -36,13 +36,10 @@ function Checkout() {
 
   const handleCreateCheckout = (e) => {
     e.preventDefault();
-    setCheckoutid(1234);
-  };
-
-  const handlePaymentSuccess = (details) => {
-    console.log("Payment Done", details);
+    // navigate directly to order confirmation page
     navigate("/order-confirmation");
   };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto py-10 px-6 tracking-tighter">
       {/* left sctio */}
@@ -167,24 +164,12 @@ function Checkout() {
             />
           </div>
           <div className="mt-6 ">
-            {!checkoutId ? (
-              <button
-                type="submit"
-                className="w-full bg-black text-white  py-3 rounded"
-              >
-                Continue to Payment
-              </button>
-            ) : (
-              <div>
-                <h3 className="text-lg mb-4 ">Pay with Paypal</h3>
-                {/* Paypal compnent */}
-                <PaypalButton
-                  amount={100}
-                  onSuccess={handlePaymentSuccess}
-                  onError={(err) => alert("Payment Failed..")}
-                />
-              </div>
-            )}
+            <button
+              type="submit"
+              className="w-full bg-black text-white  py-3 rounded"
+            >
+              Continue to Payment
+            </button>
           </div>
         </form>
       </div>
@@ -203,10 +188,27 @@ function Checkout() {
                   alt={product.name}
                   className="w-full h-24 object-cover mr-4 "
                 />
-                
+                <div>
+                  <h3 className="text-md ">{product.name}</h3>
+                  <p className="text-gray-500 ">Size: {product.size}</p>
+                  <p className="text-gray-500 ">Color: {product.color}</p>
+                </div>
               </div>
+              <p className="text-xl">${product.price}</p>
             </div>
           ))}
+        </div>
+        <div className="flex justify-between items-center text-lg mb-4 ">
+          <p>Subtotal</p>
+          <p>${cart.totalPrice}</p>
+        </div>
+        <div className="flex justify-between items-center text-lg ">
+          <p>Shipping</p>
+          <p>Free</p>
+        </div>
+        <div className="flex justify-between items-center text-lg mt-4 border-t pt-4">
+          <p>Total</p>
+          <p>${cart.totalPrice?.toLocaleString()}</p>
         </div>
       </div>
     </div>
